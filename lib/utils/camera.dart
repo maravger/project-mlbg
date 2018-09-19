@@ -1,10 +1,22 @@
 import 'dart:async';
 import 'dart:io';
+import 'package:dio/dio.dart';
 
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:video_player/video_player.dart';
+
+import 'package:flutter/services.dart' show rootBundle;
+
+
+Options options= new Options(
+//  You can access your host machine with the IP address "10.0.2.2"
+    baseUrl:"http://10.0.2.2:8000/ca_tf/imageUpload/",
+    connectTimeout:5000,
+    receiveTimeout:3000
+);
+Dio dio = new Dio(options);
 
 class CameraHome extends StatefulWidget {
   @override
@@ -126,24 +138,6 @@ class _CameraHomeState extends State<CameraHome> {
               ? onTakePictureButtonPressed
               : null,
         ),
-        new IconButton(
-          icon: const Icon(Icons.videocam),
-          color: Colors.blue,
-          onPressed: controller != null &&
-                  controller.value.isInitialized &&
-                  !controller.value.isRecordingVideo
-              ? onVideoRecordButtonPressed
-              : null,
-        ),
-        new IconButton(
-          icon: const Icon(Icons.stop),
-          color: Colors.red,
-          onPressed: controller != null &&
-                  controller.value.isInitialized &&
-                  controller.value.isRecordingVideo
-              ? onStopButtonPressed
-              : null,
-        )
       ],
     );
   }
@@ -208,7 +202,7 @@ class _CameraHomeState extends State<CameraHome> {
     }
   }
 
-  void onTakePictureButtonPressed() {
+  Future<void> onTakePictureButtonPressed() async {
     takePicture().then((String filePath) {
       if (mounted) {
         setState(() {
@@ -216,87 +210,22 @@ class _CameraHomeState extends State<CameraHome> {
           videoController?.dispose();
           videoController = null;
         });
-        if (filePath != null) showInSnackBar('Picture saved to $filePath');
+        if (filePath != null) {
+          showInSnackBar('Picture saved to $filePath');
+          mlUpload(File(filePath));
+        }
       }
+    }
+    );
+  }
+
+  mlUpload(File imageFile) async {
+    FormData formData = new FormData.from({
+      "size": "100",
+      "start_time": "12.35",
+      "file": new UploadFileInfo(imageFile, 'n3.jpg')
     });
-  }
-
-  void onVideoRecordButtonPressed() {
-    startVideoRecording().then((String filePath) {
-      if (mounted) setState(() {});
-      if (filePath != null) showInSnackBar('Saving video to $filePath');
-    });
-  }
-
-  void onStopButtonPressed() {
-    stopVideoRecording().then((_) {
-      if (mounted) setState(() {});
-      showInSnackBar('Video recorded to: $videoPath');
-    });
-  }
-
-  Future<String> startVideoRecording() async {
-    if (!controller.value.isInitialized) {
-      showInSnackBar('Error: select a camera first.');
-      return null;
-    }
-
-    final Directory extDir = await getApplicationDocumentsDirectory();
-    final String dirPath = '${extDir.path}/Movies/flutter_test';
-    await new Directory(dirPath).create(recursive: true);
-    final String filePath = '$dirPath/${timestamp()}.mp4';
-
-    if (controller.value.isRecordingVideo) {
-      // A recording is already started, do nothing.
-      return null;
-    }
-
-    try {
-      videoPath = filePath;
-      await controller.startVideoRecording(filePath);
-    } on CameraException catch (e) {
-      _showCameraException(e);
-      return null;
-    }
-    return filePath;
-  }
-
-  Future<void> stopVideoRecording() async {
-    if (!controller.value.isRecordingVideo) {
-      return null;
-    }
-
-    try {
-      await controller.stopVideoRecording();
-    } on CameraException catch (e) {
-      _showCameraException(e);
-      return null;
-    }
-
-    await _startVideoPlayer();
-  }
-
-  Future<void> _startVideoPlayer() async {
-    final VideoPlayerController vcontroller =
-        new VideoPlayerController.file(new File(videoPath));
-    videoPlayerListener = () {
-      if (videoController != null && videoController.value.size != null) {
-        // Refreshing the state to update video player with the correct ratio.
-        if (mounted) setState(() {});
-        videoController.removeListener(videoPlayerListener);
-      }
-    };
-    vcontroller.addListener(videoPlayerListener);
-    await vcontroller.setLooping(true);
-    await vcontroller.initialize();
-    await videoController?.dispose();
-    if (mounted) {
-      setState(() {
-        imagePath = null;
-        videoController = vcontroller;
-      });
-    }
-    await vcontroller.play();
+    final Response response = await dio.post('n3.jpg', data: formData);
   }
 
   Future<String> takePicture() async {
@@ -305,7 +234,9 @@ class _CameraHomeState extends State<CameraHome> {
       return null;
     }
     final Directory extDir = await getApplicationDocumentsDirectory();
+    print(extDir);
     final String dirPath = '${extDir.path}/Pictures/flutter_test';
+//    final String dirPath = '~/Desktop/';
     await new Directory(dirPath).create(recursive: true);
     final String filePath = '$dirPath/${timestamp()}.jpg';
 
@@ -320,6 +251,8 @@ class _CameraHomeState extends State<CameraHome> {
       _showCameraException(e);
       return null;
     }
+    // post data to tensorflow recognition service
+
     return filePath;
   }
 
@@ -350,24 +283,3 @@ class _CameraHomeState extends State<CameraHome> {
   }
 
 }
-
-//class CameraApp extends StatelessWidget {
-//  @override
-//  Widget build(BuildContext context) {
-//    return new MaterialApp(
-//      home: new CameraHome(),
-//    );
-//  }
-//}
-//
-//List<CameraDescription> cameras;
-//
-//Future<Null> main() async {
-//  // Fetch the available cameras before initializing the app.
-//  try {
-//    cameras = await availableCameras();
-//  } on CameraException catch (e) {
-//    logError(e.code, e.description);
-//  }
-//  runApp(new CameraApp());
-//}

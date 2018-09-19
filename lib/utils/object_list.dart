@@ -1,6 +1,8 @@
-import "obj.dart";
+import 'package:flutter/material.dart';
 
-class ObjectList {
+import "object_list_item.dart";
+
+class ObjectList extends StatelessWidget{
   List<Obj> _objects; // underscore makes the field private
   int _currentObjectIndex = -1;
   int _totalScore = 0;
@@ -17,15 +19,22 @@ class ObjectList {
   int get objectNumber => _currentObjectIndex+1;
   int get totalScore => _totalScore;
 
-  // classic full body getters
-  Obj get nextObject {
-    _currentObjectIndex++;
-    if (_currentObjectIndex >= length) return null;
-    return _objects[_currentObjectIndex];
-  }
-
   // similar to "answer"
   void submit(bool isCorrect) {
     if (isCorrect) _totalScore += _objects[_currentObjectIndex].score;
   }
+
+  @override
+  Widget build(BuildContext context) {
+    return new ListView(
+        padding: new EdgeInsets.symmetric(vertical: 8.0),
+        children: _buildObjectList(context)
+    );
+  }
+
+  List<ObjectListTile> _buildObjectList(context) {
+    return _objects.map((obj) => new ObjectListTile(obj, context))
+        .toList();
+  }
+
 }
