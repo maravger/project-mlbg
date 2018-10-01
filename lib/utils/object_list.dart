@@ -6,10 +6,11 @@ class ObjectList extends StatelessWidget{
   List<Obj> _objects; // underscore makes the field private
   int _currentObjectIndex = -1;
   int _totalScore = 0;
+  final Function() refresh;
 
   // our usual constructor
   // auti h paparia pairnei mia lista
-  ObjectList(this._objects) {
+  ObjectList(this._objects, this.refresh) {
     _objects.shuffle(); // shuffles the elements of a list
   }
 
@@ -33,7 +34,7 @@ class ObjectList extends StatelessWidget{
   }
 
   List<ObjectListTile> _buildObjectList(context) {
-    return _objects.map((obj) => new ObjectListTile(obj, context))
+    return _objects.map((obj) => new ObjectListTile(obj, context, refresh))
         .toList();
   }
 

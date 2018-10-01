@@ -10,6 +10,7 @@ import 'package:video_player/video_player.dart';
 import 'package:flutter/services.dart' show rootBundle;
 
 
+// TODO insert service ip here
 Options options= new Options(
 //  You can access your host machine with the IP address "10.0.2.2"
     baseUrl:"http://10.0.2.2:8000/ca_tf/imageUpload/",
@@ -18,11 +19,24 @@ Options options= new Options(
 );
 Dio dio = new Dio(options);
 
+String obj;
+Function() notifyOL;
+BuildContext context;
+
 class CameraHome extends StatefulWidget {
+
+  CameraHome(String objClass, Function notifyParent, BuildContext cont){
+    // Find a better way to pass this to mlUpload
+    obj = objClass;
+    notifyOL = notifyParent;
+    context = cont;
+  }
+
   @override
   _CameraHomeState createState() {
     return new _CameraHomeState();
   }
+
 }
 
 /// Returns a suitable camera icon for [direction].
@@ -203,6 +217,7 @@ class _CameraHomeState extends State<CameraHome> {
   }
 
   Future<void> onTakePictureButtonPressed() async {
+    // TODO pictures should not be saved
     takePicture().then((String filePath) {
       if (mounted) {
         setState(() {
@@ -211,7 +226,7 @@ class _CameraHomeState extends State<CameraHome> {
           videoController = null;
         });
         if (filePath != null) {
-          showInSnackBar('Picture saved to $filePath');
+          //showInSnackBar('Picture saved to $filePath');
           mlUpload(File(filePath));
         }
       }
@@ -219,13 +234,26 @@ class _CameraHomeState extends State<CameraHome> {
     );
   }
 
+
+  // That's where magic happens
   mlUpload(File imageFile) async {
     FormData formData = new FormData.from({
-      "size": "100",
-      "start_time": "12.35",
+      "class": obj,
       "file": new UploadFileInfo(imageFile, 'n3.jpg')
     });
-    final Response response = await dio.post('n3.jpg', data: formData);
+    // final Response response = await dio.post('n3.jpg', data: formData);
+    // ideally something like this
+    // resp = response.data
+    // The service response
+    bool resp = true;
+    showInSnackBar('Searching for $obj');
+    if (resp) {
+      print("Im here");
+      Navigator.pop(context);
+      notifyOL();
+    } else {
+      showInSnackBar('Try again!');
+    }
   }
 
   Future<String> takePicture() async {

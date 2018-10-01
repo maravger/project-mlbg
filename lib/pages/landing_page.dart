@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:starter_app/pages/main_menu_page.dart';
 import 'package:starter_app/pages/object_list_page.dart';
-import 'capture_page.dart';
 import '../utils/camera.dart';
 
 class LandingPage extends StatelessWidget {

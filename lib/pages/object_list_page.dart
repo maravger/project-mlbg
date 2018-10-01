@@ -11,11 +11,11 @@ class ObjectListPage extends StatefulWidget {
 
 class ObjectListState extends State<ObjectListPage> {
 
-  ObjectList ol = new ObjectList([
-    new Obj("Shopping Cart", 2, Icon(Icons.shopping_cart)),
-    new Obj("Birthday Cake", 3, Icon(Icons.cake)),
-    new Obj("Car", 1, Icon(Icons.directions_car))
-  ]);
+  List<Obj> _objs = [
+    new Obj("Shopping Cart", 2, Icon(Icons.shopping_cart), Icon(Icons.radio_button_unchecked), false),
+    new Obj("Birthday Cake", 3, Icon(Icons.cake), Icon(Icons.radio_button_unchecked), false),
+    new Obj("Car", 1, Icon(Icons.directions_car), Icon(Icons.radio_button_unchecked), false)
+  ];
   bool overlayShouldBeVisible = false;
 
   @override
@@ -23,35 +23,12 @@ class ObjectListState extends State<ObjectListPage> {
     super.initState();
   }
 
-//  Widget build(BuildContext context) {
-//    final title = 'Objects List';
-//
-//    return MaterialApp(
-//      title: title,
-//      // Implements the basic material design visual layout structure.
-//      home: Scaffold(
-//        appBar: AppBar(
-//          title: Text(title),
-//        ),
-//        body: ListView(
-//          children: <Widget>[
-//            ListTile(
-//              leading: Icon(Icons.map),
-//              title: Text('Map'),
-//            ),
-//            ListTile(
-//              leading: Icon(Icons.photo_album),
-//              title: Text('Album'),
-//            ),
-//            ListTile(
-//              leading: Icon(Icons.phone),
-//              title: Text('Phone'),
-//            ),
-//          ],
-//        ),
-//      ),
-//    );
-//  }
+  updateOLState() {
+    setState(() {
+      _objs.first.trailing = Icon(Icons.radio_button_checked);
+      _objs.first.checked = true;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -59,7 +36,7 @@ class ObjectListState extends State<ObjectListPage> {
         appBar: new AppBar(
           title: new Text("Objects List"),
         ),
-        body: ol
+        body: new ObjectList(_objs, updateOLState())
     );
   }
 }

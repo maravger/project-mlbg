@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:starter_app/pages/object_list_page.dart';
-import 'capture_page.dart';
 import '../utils/camera.dart';
 
 class MainMenuPage extends StatelessWidget {
