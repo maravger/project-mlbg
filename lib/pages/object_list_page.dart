@@ -21,12 +21,16 @@ class ObjectListState extends State<ObjectListPage> {
   @override
   void initState() {
     super.initState();
+    _objs.shuffle();
   }
 
-  updateOLState() {
+  updateOLState(String objClass) {
+    print("update ol state");
+    print(objClass);
     setState(() {
-      _objs.first.trailing = Icon(Icons.radio_button_checked);
-      _objs.first.checked = true;
+      _objs.firstWhere((obj) => obj.description == objClass).trailing
+      = Icon(Icons.radio_button_checked);
+      _objs.firstWhere((obj) => obj.description == objClass).checked = true;
     });
   }
 
@@ -36,7 +40,10 @@ class ObjectListState extends State<ObjectListPage> {
         appBar: new AppBar(
           title: new Text("Objects List"),
         ),
-        body: new ObjectList(_objs, updateOLState())
+        // This way a function (closure) is passed to body, that when executed,
+        // calls updateOLState(). Correct way to pass a callback function as
+        // parameter. Or otherwise pass it as here without parenthesis
+        body: new ObjectList(_objs, updateOLState)
     );
   }
 }

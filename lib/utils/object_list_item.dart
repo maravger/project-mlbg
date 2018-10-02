@@ -19,6 +19,7 @@ class ObjectListTile extends ListTile{
           subtitle: new Text(obj.score.toString()),
           leading: obj.leading,
           trailing: obj.trailing,
+          enabled: !obj.checked,
           onTap: () => Navigator.of(context).push(new MaterialPageRoute(
               builder: (BuildContext context) => new CameraHome(obj.description, refresh, context)))
         );

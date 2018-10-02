@@ -5,6 +5,7 @@ import 'package:dio/dio.dart';
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:starter_app/utils/object_list_item.dart';
 import 'package:video_player/video_player.dart';
 
 import 'package:flutter/services.dart' show rootBundle;
@@ -20,13 +21,13 @@ Options options= new Options(
 Dio dio = new Dio(options);
 
 String obj;
-Function() notifyOL;
+Function(String) notifyOL;
 BuildContext context;
 
 class CameraHome extends StatefulWidget {
 
   CameraHome(String objClass, Function notifyParent, BuildContext cont){
-    // Find a better way to pass this to mlUpload
+    // TODO: Find a better way to handle these
     obj = objClass;
     notifyOL = notifyParent;
     context = cont;
@@ -234,7 +235,6 @@ class _CameraHomeState extends State<CameraHome> {
     );
   }
 
-
   // That's where magic happens
   mlUpload(File imageFile) async {
     FormData formData = new FormData.from({
@@ -250,7 +250,7 @@ class _CameraHomeState extends State<CameraHome> {
     if (resp) {
       print("Im here");
       Navigator.pop(context);
-      notifyOL();
+      notifyOL(obj);
     } else {
       showInSnackBar('Try again!');
     }
