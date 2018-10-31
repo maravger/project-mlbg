@@ -15,19 +15,23 @@ class MainMenuPage extends StatelessWidget {
           children: <Widget>[
             new FlatButton(
 //                onPressed: () => Navigator.of(context).push(new MaterialPageRoute(builder: (BuildContext context) => new ObjectListPage())),
-                child: new Text("Battle Ground", style: new TextStyle(color: Colors.white, fontSize: 20.0, fontWeight: FontWeight.bold))
+                child: new Text("Battle Ground",
+                    style: new TextStyle(color: Colors.white, fontSize: 20.0, fontWeight: FontWeight.bold))
             ),
             new FlatButton(
                 onPressed: () => Navigator.of(context).push(new MaterialPageRoute(builder: (BuildContext context) => new ObjectListPage())),
-                child: new Text("Single Player", style: new TextStyle(color: Colors.white, fontSize: 20.0, fontWeight: FontWeight.bold))
+                child: new Text("Single Player",
+                    style: new TextStyle(color: Colors.white, fontSize: 20.0, fontWeight: FontWeight.bold))
             ),
             new FlatButton(
 //                onPressed: () => Navigator.of(context).push(new MaterialPageRoute(builder: (BuildContext context) => new ObjectListPage())),
-                child: new Text("Settings", style: new TextStyle(color: Colors.white, fontSize: 20.0, fontWeight: FontWeight.bold))
+                child: new Text("Settings",
+                    style: new TextStyle(color: Colors.white, fontSize: 20.0, fontWeight: FontWeight.bold))
             ),
             new FlatButton(
 //                onPressed: () => Navigator.of(context).push(new MaterialPageRoute(builder: (BuildContext context) => new ObjectListPage())),
-                child: new Text("Profile", style: new TextStyle(color: Colors.white, fontSize: 20.0, fontWeight: FontWeight.bold))
+                child: new Text("Profile",
+                    style: new TextStyle(color: Colors.white, fontSize: 20.0, fontWeight: FontWeight.bold))
             ),
           ],
         ),

@@ -1,12 +1,10 @@
+import 'package:starter_app/app.dart';
+import 'package:starter_app/app_state_container.dart';
 import 'package:flutter/material.dart';
 
-import 'pages/quiz_page.dart';
-import 'pages/landing_page.dart';
-import 'pages/score_page.dart';
-import 'package:camera/camera.dart';
-
 void main() {
-  runApp(new MaterialApp(
-    home: new LandingPage(),
+  // Wrap your App in your new storage container
+  runApp(new AppStateContainer(
+    child: new AppRootWidget(),
   ));
 }
