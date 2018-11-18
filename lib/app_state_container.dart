@@ -131,6 +131,15 @@ class _AppStateContainerState extends State<AppStateContainer> {
     }
   }
 
+  Future <Null> logOutOfFirebase() async{
+    await FirebaseAuth.instance.signOut();
+//      await googleSignIn.signOut();
+    FirebaseUser user = await FirebaseAuth.instance.currentUser();
+    setState(() {
+      state.user = user;
+    });
+  }
+
   // So the WidgetTree is actually
   // AppStateContainer --> InheritedStateContainer --> The rest of your app.
   @override

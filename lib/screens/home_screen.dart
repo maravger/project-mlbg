@@ -38,7 +38,39 @@ class HomeScreenState extends State<HomeScreen> {
       return new AuthScreen();
     } else {
       print("8888");
-      return new Center(child: new Text(appState.user.displayName));
+//      return new Center(child: new Text(appState.user.displayName));
+      return new Container(
+          width: MediaQuery.of(context).size.width,
+          child: new Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: <Widget>[
+              new Center(child: new Text(appState.user.displayName)),
+              new RaisedButton(
+              // Call a method from the state (!!!)
+                onPressed: () => AppStateContainer.of(context).logOutOfFirebase(),             // updated
+                color: Colors.white,
+                child: new Container(
+                  width: 230.0,
+                  height: 50.0,
+                  alignment: Alignment.center,
+                  child: new Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      new Text(
+                        'Sign Out',
+                        textAlign: TextAlign.center,
+                        style: new TextStyle(
+                          fontSize: 16.0,
+                        ),
+                      ),
+                    ]
+                  )
+                )
+              ),
+            ]
+          )
+      );
     }
   }
 
