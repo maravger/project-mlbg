@@ -45,7 +45,31 @@ class HomeScreenState extends State<HomeScreen> {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
-              new Center(child: new Text(appState.user.displayName)),
+//              new Center(child: new Text("Welcome " + appState.user.displayName)),
+              new FlatButton(
+                  child: new Text("Welcome " + appState.user.displayName,
+                      style: new TextStyle(color: Colors.blueAccent, fontSize: 20.0, fontWeight: FontWeight.bold))
+              ),
+              new RaisedButton(
+                  color: Colors.white,
+                  child: new Container(
+                      width: 230.0,
+                      height: 50.0,
+                      alignment: Alignment.center,
+                      child: new Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            new Text(
+                              'Pick an Opponent',
+                              textAlign: TextAlign.center,
+                              style: new TextStyle(
+                                fontSize: 16.0,
+                              ),
+                            ),
+                          ]
+                      )
+                  )
+              ),
               new RaisedButton(
               // Call a method from the state (!!!)
                 onPressed: () => AppStateContainer.of(context).logOutOfFirebase(),             // updated
@@ -91,7 +115,7 @@ class HomeScreenState extends State<HomeScreen> {
 
     return new Scaffold(
       appBar: new AppBar(
-        title: new Text('Suite'),
+        title: new Text('Sign In'),
       ),
       // Replace the hardcoded widget
       // with our widget that switches.

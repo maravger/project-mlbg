@@ -12,9 +12,12 @@ class ObjectListPage extends StatefulWidget {
 class ObjectListState extends State<ObjectListPage> {
 
   List<Obj> _objs = [
-    new Obj("Shopping Cart", 2, Icon(Icons.shopping_cart), Icon(Icons.radio_button_unchecked), false),
-    new Obj("Birthday Cake", 3, Icon(Icons.cake), Icon(Icons.radio_button_unchecked), false),
-    new Obj("Car", 1, Icon(Icons.directions_car), Icon(Icons.radio_button_unchecked), false)
+    new Obj("Shopping Cart", 2, Icon(Icons.shopping_cart),
+        Icon(Icons.radio_button_unchecked), false),
+    new Obj("Birthday Cake", 3, Icon(Icons.cake),
+        Icon(Icons.radio_button_unchecked), false),
+    new Obj("Car", 1, Icon(Icons.directions_car),
+        Icon(Icons.radio_button_unchecked), false)
   ];
   bool overlayShouldBeVisible = false;
 
@@ -28,9 +31,13 @@ class ObjectListState extends State<ObjectListPage> {
     print("update ol state");
     print(objClass);
     setState(() {
-      _objs.firstWhere((obj) => obj.description == objClass).trailing
+      _objs
+          .firstWhere((obj) => obj.description == objClass)
+          .trailing
       = Icon(Icons.radio_button_checked);
-      _objs.firstWhere((obj) => obj.description == objClass).checked = true;
+      _objs
+          .firstWhere((obj) => obj.description == objClass)
+          .checked = true;
     });
   }
 
@@ -39,10 +46,9 @@ class ObjectListState extends State<ObjectListPage> {
     return new Scaffold(
         appBar: new AppBar(
           title: new Text("Objects List"),
+          backgroundColor: Colors.blueAccent,
         ),
-        // This way a function (closure) is passed to body, that when executed,
-        // calls updateOLState(). Correct way to pass a callback function as
-        // parameter. Or otherwise pass it as here without parenthesis
+//        backgroundColor: Colors.blueAccent,
         body: new ObjectList(_objs, updateOLState)
     );
   }

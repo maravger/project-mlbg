@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:starter_app/app.dart';
+import 'package:starter_app/app_state_container.dart';
 import 'package:starter_app/pages/object_list_page.dart';
 import '../utils/camera.dart';
 
@@ -14,7 +16,7 @@ class MainMenuPage extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center, // Y Axis Alignment
           children: <Widget>[
             new FlatButton(
-//                onPressed: () => Navigator.of(context).push(new MaterialPageRoute(builder: (BuildContext context) => new ObjectListPage())),
+                onPressed: () => Navigator.of(context).push(new MaterialPageRoute(builder: (BuildContext context) => new AppStateContainer(child: new AppRootWidget()))),
                 child: new Text("Battle Ground",
                     style: new TextStyle(color: Colors.white, fontSize: 20.0, fontWeight: FontWeight.bold))
             ),
